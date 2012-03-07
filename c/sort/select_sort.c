@@ -7,14 +7,14 @@ void select_sort(int a[], int n){
     int min,temp;
     for(i = 0; i < n; ++i){
         min = i;
-	temp = a[i];
-	for(j = i+1; j < n; ++j){
-	    if(a[j] > a[min]){
-		min = j;
-	    }
-	}
-	a[i] = a[min];
-	a[min] = temp;
+		temp = a[i];
+		for(j = i+1; j < n; ++j){
+	    	if(a[j] > a[min]){
+				min = j;
+	    	}
+		}
+		a[i] = a[min];
+		a[min] = temp;
     }
 }
 
