@@ -1,30 +1,28 @@
-void fast_sort(int[] a, int start, int end) {
-        int i = 0, j = 0;
-        int temp;
-        if (end - start < 1) {
-            return;
-        }
-        i = start;
-        j = end;
-        while (i < j) {
-            while (a[i] <= a[start] && i < end) {
-                i++;
-            }
-            while (a[j] > a[start] && j >= start) {
-                j--;
-            }
-            if (i < j) {
-                temp = a[i];
-                a[i] = a[j];
-                a[j] = temp;
-            } else {
-                break;
-            }
-        }
-        temp = a[start];
-        a[start] = a[j];
-        a[j] = temp;
+#include <stdio.h>
 
-        fast_sort(a, start, j - 1);
-        fast_sort(a, j + 1, end);
-    }
+#define LENGTH 10
+
+void fast_sort(int a[], int n){
+	int k = 0, i;
+	int nums[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+	for(i = 0; i < n; ++i){
+		nums[a[i]]++;
+	}
+	for(i = 0; i < n; ++i){
+		while(nums[i] > 0){
+			a[k++] = i;
+			nums[i]--;
+		}
+	}
+}
+
+int main(){
+	int i;
+	int a[] = {2, 1, 5, 3, 0, 3, 2, 3, 1, 4};
+	fast_sort(a, LENGTH);
+	for(i = 0; i < LENGTH; ++i){
+		printf("%d", a[i]);
+		printf(",");
+	}
+	return 0;
+}
