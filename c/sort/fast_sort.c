@@ -4,7 +4,7 @@
 
 void fast_sort(int a[], int n){
 	int k = 0, i;
-	int nums[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+	int nums[LENGTH] = {0};
 	for(i = 0; i < n; ++i){
 		nums[a[i]]++;
 	}
