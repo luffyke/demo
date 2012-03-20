@@ -27,6 +27,11 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+/**
+ * 
+ * @author kxt
+ *
+ */
 public class XSearch extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -38,8 +43,8 @@ public class XSearch extends JFrame {
 	private JLabel inputLabel = new JLabel();
 	private JLabel timeTipLabel = new JLabel();
 	private JLabel timeLable = new JLabel();
-	private JComboBox rootBox = null;
-	private JList list = new JList();
+	private JComboBox<Object> rootBox = null;
+	private JList<Object> list = new JList<Object>();
 
 	private JScrollPane scrollPane = new JScrollPane(list);
 	private JPanel topArea = new JPanel();
@@ -47,10 +52,13 @@ public class XSearch extends JFrame {
 	private String input = null;
 	private List<String> resultList = new ArrayList<String>();
 	private List<String> nameList = new ArrayList<String>();
+	
+	private static final String ALL = "All";
+	private static final String NO_RESULT_BE_FOUND = "No result be found";
 
 	private void initUI() {
 		selectLabel.setText("Please select:");
-		inputLabel.setText("input:");
+		inputLabel.setText("Input:");
 		timeTipLabel.setText("Time:");
 		searchButton.setText("Search");
 
@@ -58,7 +66,7 @@ public class XSearch extends JFrame {
 		inputText.addKeyListener(new Search());
 		Container contentPane = this.getContentPane();
 
-		rootBox = new JComboBox(this.getRoots().toArray());
+		rootBox = new JComboBox<Object>(this.getRoots().toArray());
 
 		topArea.setLayout(new FlowLayout(5));
 		topArea.add(selectLabel);
@@ -77,11 +85,9 @@ public class XSearch extends JFrame {
 		contentPane.add(scrollPane, BorderLayout.CENTER);
 
 		try {
-			UIManager
-					.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 			SwingUtilities.updateComponentTreeUI(this);
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 		this.setTitle("XSearch");
 		this.setSize(new Dimension(800, 600));
@@ -98,38 +104,36 @@ public class XSearch extends JFrame {
 
 		public void keyPressed(KeyEvent e) {
 			int code = e.getKeyCode();
-			if (code == e.VK_ENTER) {
+			if (code == KeyEvent.VK_ENTER) {
 				searchFile();
 			}
 		}
 
 		public void keyReleased(KeyEvent e) {
-
 		}
 
 		public void keyTyped(KeyEvent e) {
-
 		}
 
 		public void searchFile() {
 			Long startTime = System.currentTimeMillis();
 			String path = null;
-			if (nameList.size() > 0 || nameList != null) {
+			if (nameList.size() > 0) {
 				nameList.clear();
 			}
 			input = inputText.getText();
 			path = rootBox.getSelectedItem().toString();
-			if (!path.equals("")) {
+			if (!ALL.equals(path)) {
 				nameList = getSearchResult(path);
-				if (nameList.size() == 0 || nameList == null) {
-					nameList.add("");
+				if (nameList.size() == 0) {
+					nameList.add(NO_RESULT_BE_FOUND);
 				}
 				list.setListData(nameList.toArray());
 			} else {
-				for (int i = 1; i < getRoots().size(); i++) {
+				for (int i = 1; i < getRoots().size(); ++i) {
 					nameList = getSearchResult(getRoots().get(i));
-					if (nameList.size() == 0 || nameList == null) {
-						nameList.add("");
+					if (nameList.size() == 0) {
+						nameList.add(NO_RESULT_BE_FOUND);
 					}
 					list.setListData(nameList.toArray());
 				}
@@ -143,7 +147,6 @@ public class XSearch extends JFrame {
 	private class Open implements MouseListener {
 
 		public void mouseClicked(MouseEvent e) {
-
 			if (e.getClickCount() == 2) {
 				String selectValue = list.getSelectedValue().toString();
 				String cmd = "rundll32 url.dll FileProtocolHandler file://"
@@ -151,25 +154,20 @@ public class XSearch extends JFrame {
 				try {
 					Runtime.getRuntime().exec(cmd);
 				} catch (IOException e1) {
-					e1.printStackTrace();
 				}
 			}
 		}
 
 		public void mouseEntered(MouseEvent e) {
-
 		}
 
 		public void mouseExited(MouseEvent e) {
-
 		}
 
 		public void mousePressed(MouseEvent e) {
-
 		}
 
 		public void mouseReleased(MouseEvent e) {
-
 		}
 
 	}
@@ -177,10 +175,6 @@ public class XSearch extends JFrame {
 	public List<String> getSearchResult(String filePath) {
 
 		File file = new File(filePath);
-		/*
-		 * FileSystemView view = FileSystemView.getFileSystemView(); Icon icon =
-		 * view.getSystemIcon(file); imageLabel.setIcon(icon);
-		 */
 		if (file.isFile()) {
 			String fileName = file.getName();
 			if (fileName.indexOf(input.toUpperCase()) > -1
@@ -197,19 +191,18 @@ public class XSearch extends JFrame {
 			if (files == null || files.length < 0) {
 				return null;
 			}
-			for (int i = 0; i < files.length; i++) {
+			for (int i = 0; i < files.length; ++i) {
 				String childFilePath = filePath + "/" + files[i];
 				getSearchResult(childFilePath);
 			}
 		}
-
 		return resultList;
 	}
 
 	public List<String> getRoots() {
 		File[] roots = File.listRoots();
 		List<String> rootList = new ArrayList<String>();
-		rootList.add("");
+		rootList.add(ALL);
 		for (int i = 0; i < roots.length; i++) {
 			rootList.add(roots[i].getPath());
 		}
