@@ -5,7 +5,7 @@
 	int bi_search(int a[], int target, int n){
         int start = 0;
         int end = n;
-        int mid = (end - start) / 2;
+        int mid = end / 2;
         while(start < end){
             if(a[mid] < target){
                 start = mid + 1;
@@ -14,6 +14,7 @@
                 end = mid;
             }
             if(a[mid] == target) return mid + 1;
+			// mid = (start + end) / 2;	// Avoid as (start + end) maybe exceed int max range.
             mid = start + (end - start) / 2;
         }
         return -1;
