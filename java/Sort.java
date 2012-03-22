@@ -1,5 +1,3 @@
-package beyondx.base;
-
 /**
  * @author kxt
  */
