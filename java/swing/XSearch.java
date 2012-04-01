@@ -7,10 +7,10 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,41 +28,62 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 /**
- * 
  * @author kxt
- *
  */
 public class XSearch extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
-	private Font font = new Font(Font.DIALOG, Font.BOLD, 13);
-	private JTextField inputText = new JTextField(35);
-	private JButton searchButton = new JButton();
-	private JLabel selectLabel = new JLabel();
-	private JLabel inputLabel = new JLabel();
-	private JLabel timeTipLabel = new JLabel();
-	private JLabel timeLable = new JLabel();
+	private Font font = null;
+	private JTextField inputText = null;
+	private JButton searchButton = null;
+	private JButton stopButton = null;
+	private JLabel selectLabel = null;
+	private JLabel inputLabel = null;
+	private JLabel timeTipLabel = null;
+	private JLabel timeLable = null;
 	private JComboBox<Object> rootBox = null;
-	private JList<Object> list = new JList<Object>();
+	private JList<Object> list = null;
 
-	private JScrollPane scrollPane = new JScrollPane(list);
-	private JPanel topArea = new JPanel();
+	private JScrollPane scrollPane = null;
+	private JPanel topArea = null;
 
 	private String input = null;
-	private List<String> resultList = new ArrayList<String>();
-	private List<String> nameList = new ArrayList<String>();
+	private long startTime = 0;
+	private List<String> resultList = null;
+	public static boolean isSearchFinish = false;
+	private SearchThread st = null;
 	
 	private static final String ALL = "All";
 	private static final String NO_RESULT_BE_FOUND = "No result be found";
+	private static final String SLASH = "/";
+	private static final String BACKSLASH = "\\";
 
 	private void initUI() {
+		// New object
+		font = new Font(Font.DIALOG, Font.BOLD, 13);
+		inputText = new JTextField(35);
+		searchButton = new JButton();
+		stopButton = new JButton();
+		selectLabel = new JLabel();
+		inputLabel = new JLabel();
+		timeTipLabel = new JLabel();
+		timeLable = new JLabel();
+		list = new JList<Object>();
+		scrollPane = new JScrollPane(list);
+		topArea = new JPanel();
+		resultList = new ArrayList<String>();
+		
+		// Init
 		selectLabel.setText("Please select:");
 		inputLabel.setText("Input:");
 		timeTipLabel.setText("Time:");
 		searchButton.setText("Search");
+		stopButton.setText("Stop");
 
 		searchButton.addActionListener(new Search());
+		stopButton.addMouseListener(new Stop());
+		stopButton.setEnabled(false);
 		inputText.addKeyListener(new Search());
 		Container contentPane = this.getContentPane();
 
@@ -74,6 +95,7 @@ public class XSearch extends JFrame {
 		topArea.add(inputLabel);
 		topArea.add(inputText);
 		topArea.add(searchButton);
+		topArea.add(stopButton);
 		topArea.add(timeTipLabel);
 		topArea.add(timeLable);
 
@@ -90,61 +112,90 @@ public class XSearch extends JFrame {
 		} catch (Exception e) {
 		}
 		this.setTitle("XSearch");
-		this.setSize(new Dimension(800, 600));
-		this.setLocation(250, 200);
+		this.setSize(new Dimension(700, 400));
+		this.setLocation(300, 150);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
 	}
+	
+	public void createAndOpenFrame(){
+		st = new SearchThread();
+		this.initUI();
+	}
+	
+	private class SearchThread extends Thread {
+		public void run() {
+			while(true){
+				if(isSearchFinish) break;
+				searchFile();
+			}
+		}
+	}
+	
+	private void searchFile() {
+		String path = null;
+		if (resultList.size() > 0) {
+			resultList.clear();
+		}
+		input = inputText.getText();
+		path = rootBox.getSelectedItem().toString();
+		startTime = System.currentTimeMillis();
+		if (!ALL.equals(path)) {
+			getSearchResult(path);
+			if (resultList.size() == 0) {
+				resultList.add(NO_RESULT_BE_FOUND);
+			}
+			list.setListData(resultList.toArray());
+		} else {
+			List<String> rootList = getRoots();
+			for (int i = 1; i < rootList.size(); ++i) {
+				getSearchResult(rootList.get(i));
+				if (resultList.size() == 0) {
+					resultList.add(NO_RESULT_BE_FOUND);
+				}
+				list.setListData(resultList.toArray());
+			}
+		}
+		Long endTime = System.currentTimeMillis();
+		timeLable.setText((endTime - startTime)/1000 + "s");
+	}
 
-	private class Search implements ActionListener, KeyListener {
+	private class Search extends KeyAdapter implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
-			searchFile();
+			if(st != null && !st.isAlive()){
+				stopButton.setEnabled(true);
+				st.start();
+			}
 		}
 
 		public void keyPressed(KeyEvent e) {
 			int code = e.getKeyCode();
 			if (code == KeyEvent.VK_ENTER) {
-				searchFile();
-			}
-		}
-
-		public void keyReleased(KeyEvent e) {
-		}
-
-		public void keyTyped(KeyEvent e) {
-		}
-
-		public void searchFile() {
-			Long startTime = System.currentTimeMillis();
-			String path = null;
-			if (nameList.size() > 0) {
-				nameList.clear();
-			}
-			input = inputText.getText();
-			path = rootBox.getSelectedItem().toString();
-			if (!ALL.equals(path)) {
-				nameList = getSearchResult(path);
-				if (nameList.size() == 0) {
-					nameList.add(NO_RESULT_BE_FOUND);
-				}
-				list.setListData(nameList.toArray());
-			} else {
-				for (int i = 1; i < getRoots().size(); ++i) {
-					nameList = getSearchResult(getRoots().get(i));
-					if (nameList.size() == 0) {
-						nameList.add(NO_RESULT_BE_FOUND);
-					}
-					list.setListData(nameList.toArray());
+				if(st != null && !st.isAlive()){
+					stopButton.setEnabled(true);
+					st.start();
 				}
 			}
+		}
+	}
+	
+	private class Stop extends MouseAdapter {
+
+		public void mouseClicked(MouseEvent e) {
+			if(st.isAlive()){
+				st.interrupt();
+			}
+			if (resultList.size() == 0) {
+				resultList.add(NO_RESULT_BE_FOUND);
+			}
+			list.setListData(resultList.toArray());
 			Long endTime = System.currentTimeMillis();
-			timeLable.setText(String.valueOf(endTime - startTime) + "ms");
+			timeLable.setText((endTime - startTime)/1000 + "s");
 		}
-
 	}
 
-	private class Open implements MouseListener {
+	private class Open extends MouseAdapter {
 
 		public void mouseClicked(MouseEvent e) {
 			if (e.getClickCount() == 2) {
@@ -157,61 +208,44 @@ public class XSearch extends JFrame {
 				}
 			}
 		}
-
-		public void mouseEntered(MouseEvent e) {
-		}
-
-		public void mouseExited(MouseEvent e) {
-		}
-
-		public void mousePressed(MouseEvent e) {
-		}
-
-		public void mouseReleased(MouseEvent e) {
-		}
-
 	}
 
-	public List<String> getSearchResult(String filePath) {
-
-		File file = new File(filePath);
+	private void getSearchResult(String fileRoot) {
+		File file = new File(fileRoot);
 		if (file.isFile()) {
 			String fileName = file.getName();
-			if (fileName.indexOf(input.toUpperCase()) > -1
-					|| fileName.indexOf(input.toLowerCase()) > -1) {
-				resultList.add(file.getParent() + "\\" + fileName);
+			if (file.getName().indexOf(input.toUpperCase()) > -1
+					|| file.getName().indexOf(input.toLowerCase()) > -1) {
+				resultList.add(file.getParent() + BACKSLASH + fileName);
+				list.setListData(resultList.toArray());
 			}
 		}
 		if (file.isDirectory()) {
-			String[] files = file.list();
 			if (file.getName().indexOf(input.toUpperCase()) > -1
 					|| file.getName().indexOf(input.toLowerCase()) > -1) {
 				resultList.add(file.getPath());
+				list.setListData(resultList.toArray());
 			}
-			if (files == null || files.length < 0) {
-				return null;
-			}
-			for (int i = 0; i < files.length; ++i) {
-				String childFilePath = filePath + "/" + files[i];
-				getSearchResult(childFilePath);
+			String[] files = file.list();
+			if(files != null){
+				String childFilePath = null;
+				for (int i = 0; i < files.length; ++i) {
+					childFilePath = fileRoot + SLASH + files[i];
+					getSearchResult(childFilePath);
+				}
 			}
 		}
-		return resultList;
+		stopButton.setEnabled(false);
+		isSearchFinish = true;
 	}
 
-	public List<String> getRoots() {
+	private List<String> getRoots() {
 		File[] roots = File.listRoots();
 		List<String> rootList = new ArrayList<String>();
 		rootList.add(ALL);
-		for (int i = 0; i < roots.length; i++) {
+		for (int i = 0; i < roots.length; ++i) {
 			rootList.add(roots[i].getPath());
 		}
 		return rootList;
 	}
-
-	public static void main(String[] args) {
-		XSearch xSearch = new XSearch();
-		xSearch.initUI();
-	}
-
 }
