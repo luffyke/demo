@@ -1,0 +1,27 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<script type="text/javascript" src="jquery.js"></script>
+<script>
+$(document).ready(function(){
+	$("#captcha").click(function(){
+		$('#captcha').attr('src','captcha.php?'+Math.random());
+	});
+});
+function reload(){
+	$('#captcha').attr('src','captcha.php?'+Math.random());
+}
+</script>
+</head>
+<body>
+<form action="server.php" method="POST">
+<div>
+验证码
+<span><img id="captcha" src="captcha.php" alt="点击换一张" style="cursor:pointer" /></span>
+看不清?<a href="javascript:reload();"> 换一换</a>
+<input type="text" id="vercode" name="vercode" class="text" autocomplete="off" />
+<input type="submit" id="valid" name="valid" value="验证"/>
+</div>
+</form>
+</body>
+</html>
