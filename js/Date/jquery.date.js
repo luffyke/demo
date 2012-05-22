@@ -53,7 +53,7 @@ $.fn.date = function(year, month, day){
 	var is_leap = false;
 	
 	//接受参数
-	if(typeof year != undefined){
+	if(typeof year != 'undefined'){
 		if(year % 400 == 0 || (year % 4 == 0 && year % 100 != 0)){
 			is_leap = true;
 		} else {
@@ -91,14 +91,14 @@ $.fn.date = function(year, month, day){
 			for(var i = 0; i < 31; i++){
 				day_select.append("<option value='" + (i+1) + "'>" + (i+1) + "</option>");
 			}
-			if(typeof month != undefined){
+			if(typeof month != 'undefined'){
 				month_select.val(month);
 				month_select.change();
 		    } else {
 		    	month_select.val(1);
 		    	month_select.change();
 		    }
-			if(typeof day != undefined){
+			if(typeof day != 'undefined'){
 				day_select.val(day);
 		    } else {
 		    	day_select.val(1);
@@ -109,16 +109,20 @@ $.fn.date = function(year, month, day){
 	month_select.change(function(){
 		var select_month_value = $('#month').val();
 		day_select[0].options.length=0;
-		if(is_leap){
-			month_max_day_array[1] = 29;
+		if(select_month_value == 0){	//当选择的为 “请选择” 时
+			day_select.append("<option value='" + _self.data("day")[1] + "'>" + _self.data("day")[0] + "</option>");
 		} else {
-			month_max_day_array[1] = 28;
-		}
-		for(var i = 0; i < month_max_day_array[select_month_value-1]; i++){
-			day_select.append("<option value='" + (i+1) + "'>" + (i+1) + "</option>");
-		}
-		if(typeof day != undefined){
-			day_select.val(day);
+			if(is_leap){
+				month_max_day_array[1] = 29;
+			} else {
+				month_max_day_array[1] = 28;
+			}
+			for(var i = 0; i < month_max_day_array[select_month_value-1]; i++){
+				day_select.append("<option value='" + (i+1) + "'>" + (i+1) + "</option>");
+			}
+			if(typeof day != 'undefined'){
+				day_select.val(day);
+			}
 		}
 	}).change();
 	
