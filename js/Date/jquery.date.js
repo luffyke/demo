@@ -71,7 +71,7 @@ $.fn.date = function(year, month, day){
 		month_select[0].options.length=0;
 		day_select[0].options.length=0;
 		var index = this.selectedIndex;
-		if(index == 0){	//当选择的为 “请选择” 时
+		if(index == 0){	//当选择的为 "请选择" 时
 			if(_self.data("month")){
 				month_select.append("<option value='" + _self.data("month")[1] + "'>" + _self.data("month")[0] + "</option>");
 			}
@@ -92,6 +92,9 @@ $.fn.date = function(year, month, day){
 				day_select.append("<option value='" + (i+1) + "'>" + (i+1) + "</option>");
 			}
 			if(typeof month != 'undefined'){
+				if(parseInt(month, 10) < 10) {
+					month = month.substr(1, 1);
+				}
 				month_select.val(month);
 				month_select.change();
 		    } else {
@@ -109,7 +112,7 @@ $.fn.date = function(year, month, day){
 	month_select.change(function(){
 		var select_month_value = $('#month').val();
 		day_select[0].options.length=0;
-		if(select_month_value == 0){	//当选择的为 “请选择” 时
+		if(select_month_value == 0){	//当选择的为 "请选择" 时
 			day_select.append("<option value='" + _self.data("day")[1] + "'>" + _self.data("day")[0] + "</option>");
 		} else {
 			if(is_leap){
