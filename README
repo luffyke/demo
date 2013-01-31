@@ -1,15 +1,4 @@
 # kxt's Example GitHub project
 The project [kxt-example](https://github.com/luffyke/kxt-example)
-welcome to here
 
-**Git**,you can access this repository in Windows,Linux or Mac OS X by GUI tools.
-
-## Repository URL
-Support below 3 protocols
-
-* HTTP protocol: 'https://github.com/luffyke/kxt-example.git'
-* Git protocol: 'git://github.com/luffyke/kxt-example.git'
-* SSH protocol: 'ssh://git@github.com/luffyke/kxt-example.git'
-
-## Clone Repository
-$ git clone git://github.com/luffyke/kxt-example.git
+Just some examples.
