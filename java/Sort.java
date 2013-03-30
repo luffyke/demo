@@ -3,24 +3,19 @@
  */
 public class Sort {
 
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
 		int a[] = {6, 5, 1, 2, 5, 3, 0, 4};
 		merge_sort(a, 0, a.length - 1);
-		for(int i = 0; i < a.length; ++i){
+		for(int i = 0; i < a.length; ++i) {
 			System.out.print(a[i] + ",");
 		}
 	}
 	
-	public static int get_mid(int first, int last){
-		// return (first + last) / 2;	// Wrong
-		// return first / 2 + last / 2;
+	public static int get_mid(int first, int last) {
 		return (first & last) + ((first ^ last) >> 1);
 	}
 	
-	public static void merge_sort(int a[], int first, int last){
+	public static void merge_sort(int a[], int first, int last) {
 		int mid = 0;
 		if(first < last){
 			mid = get_mid(first, last);
@@ -30,30 +25,30 @@ public class Sort {
 		}
 	}
 	
-	public static int[] merge(int a[], int first, int mid, int last){
+	public static int[] merge(int a[], int first, int mid, int last) {
 		int left[] = new int[mid - first + 1];
 		int right[] = new int[last - mid];
 		int i = 0, j = 0, k = 0;
-		for (i = 0; i < left.length; ++i){
+		for (i = 0; i < left.length; ++i) {
 			left[i] = a[first + i];
 		}
-		for (j = 0; j < right.length; ++j){
+		for (j = 0; j < right.length; ++j) {
 			right[j] = a[mid + j + 1];
 		}
 		
 		i = j = 0;
 		k = first;
-		while(i < left.length && j < right.length){
-			if(left[i] < right[j]){
+		while(i < left.length && j < right.length) {
+			if(left[i] < right[j]) {
 				a[k++] = left[i++];
-			} else{
+			} else {
 				a[k++] = right[j++];
 			}
 		}
-		while(i < left.length){
+		while(i < left.length) {
 			a[k++] = left[i++];
 		}
-		while(j < right.length){
+		while(j < right.length) {
 			a[k++] = right[j++];
 		}
 		return a;
