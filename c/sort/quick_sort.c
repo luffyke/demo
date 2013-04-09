@@ -1,4 +1,4 @@
-void fast_sort(int[] a, int start, int end) {
+void quick_sort(int[] a, int start, int end) {
         int i = 0, j = 0;
         int temp;
         if (end - start < 1) {
@@ -25,6 +25,6 @@ void fast_sort(int[] a, int start, int end) {
         a[start] = a[j];
         a[j] = temp;
 
-        fast_sort(a, start, j - 1);
-        fast_sort(a, j + 1, end);
+        quick_sort(a, start, j - 1);
+        quick_sort(a, j + 1, end);
     }
