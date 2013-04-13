@@ -25,4 +25,5 @@ int main(){
 		printf("%d", a[i]);
 		printf(",");
 	}
+	return 0;
 }
