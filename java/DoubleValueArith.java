@@ -1,4 +1,4 @@
-package bx.basic;
+package bx.util;
 
 import java.math.BigDecimal;
 
@@ -45,4 +45,13 @@ public class DoubleValueArith {
         BigDecimal db2 = new BigDecimal(double2.toString());
         return db1.divide(db2, scale, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
+    
+    public static double remainder(double d1, double d2) {
+        Double double1 = new Double(d1);
+        Double double2 = new Double(d2);
+        BigDecimal db1 = new BigDecimal(double1.toString());
+        BigDecimal db2 = new BigDecimal(double2.toString());
+        return db1.remainder(db2).doubleValue();
+    }
+
 }
