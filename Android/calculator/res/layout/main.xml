@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background" 
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/inputValue"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:numeric="integer"
+        android:gravity="right"
+        android:textSize="50dp"
+        android:singleLine="true"
+        android:typeface="monospace"
+        android:maxLength="10"
+        android:textColor = "#111"
+        android:text="@string/zero" >
+    </TextView>
+
+    <TableLayout
+        android:id="@+id/calculatorTableLayout"
+        android:stretchColumns="0,1,2,3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >       
+        <TableRow
+            android:id="@+id/calculatorTableRow1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+            <ImageButton
+                android:id="@+id/clearButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" 
+                android:src="@drawable/clear" />"
+            <ImageButton
+                android:id="@+id/positiveOrNegativeButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" 
+                android:src="@drawable/positive_or_negative" />
+            <ImageButton
+                android:id="@+id/divButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" 
+                android:src="@drawable/div" />
+            <ImageButton
+                android:id="@+id/remainderButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" 
+                android:src="@drawable/remainder" />
+        </TableRow>
+        <TableRow
+            android:id="@+id/calculatorTableRow2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+            <ImageButton
+                android:id="@+id/sevenButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" 
+                android:src="@drawable/seven" />
+            <ImageButton
+                android:id="@+id/eightButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" 
+                android:src="@drawable/eight" />
+            <ImageButton
+                android:id="@+id/nineButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" 
+                android:src="@drawable/nine" />
+            <ImageButton
+	                android:id="@+id/multiplyButton"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:src="@drawable/multiply" />
+        </TableRow>
+        <TableRow
+            android:id="@+id/calculatorTableRow3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+            <ImageButton
+                android:id="@+id/fourButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" 
+                android:src="@drawable/four" />
+            <ImageButton
+                android:id="@+id/fiveButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" 
+                android:src="@drawable/five" />
+            <ImageButton
+                android:id="@+id/sixButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" 
+                android:src="@drawable/six" />
+            <ImageButton
+	                android:id="@+id/minusButton"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content" 
+	                android:src="@drawable/minus" />
+        </TableRow>
+        <TableRow
+            android:id="@+id/calculatorTableRow4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+            <ImageButton
+                android:id="@+id/oneButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" 
+                android:src="@drawable/one" />
+            <ImageButton
+                android:id="@+id/twoButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" 
+                android:src="@drawable/two" />
+            <ImageButton
+                android:id="@+id/threeButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" 
+                android:src="@drawable/three" />
+             <ImageButton
+	                android:id="@+id/plusButton"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content" 
+	                android:src="@drawable/plus" />
+        </TableRow>
+        <TableRow
+            android:id="@+id/calculatorTableRow5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+            <ImageButton
+                android:id="@+id/zeroButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" 
+                android:layout_span="2"
+                android:src="@drawable/zero" />
+            <ImageButton
+                android:id="@+id/pointButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" 
+                android:src="@drawable/point" />
+             <ImageButton
+	                android:id="@+id/equalButton"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content" 
+	                android:src="@drawable/equal" />
+        </TableRow>
+	</TableLayout>
+</LinearLayout>
