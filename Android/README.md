@@ -9,4 +9,4 @@ So far there are below Android demos:
 
 ### Flashlight
 ![](https://github.com/luffyke/kxt-example/raw/master/Android/images/flashlight/menu-clicked.png)<br>
-![](https://github.com/luffyke/kxt-example/raw/master/Android/images/calculator/pop-menu.png)<br>
+![](https://github.com/luffyke/kxt-example/raw/master/Android/images/flashlight/pop-menu.png)<br>
