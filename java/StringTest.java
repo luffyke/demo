@@ -58,5 +58,24 @@ public class StringTest {
         }
         return true;
     }
+	
+	/**
+     * Format string to unicode
+     * 
+     * @param str
+     * @return
+     */
+    public static String toUnicode(String str) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < str.length(); ++i) {
+            if (str.charAt(i) <= 256) {
+                sb.append("\\u00");
+            } else {
+                sb.append("\\u");
+            }
+            sb.append(Integer.toHexString(str.charAt(i)));
+        }
+        return sb.toString();
+    }
     
 }
