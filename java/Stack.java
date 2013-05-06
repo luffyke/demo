@@ -9,6 +9,7 @@ public class Stack {
     
     private Item[] items;
     private int count;
+    private int size;
     
     private static final int DEFAULT_SIZE = 100;
     
@@ -21,11 +22,17 @@ public class Stack {
     }
     
     public Stack() {
-        items = new Item[DEFAULT_SIZE];
+        this.size = DEFAULT_SIZE;
+        items = new Item[size];
+    }
+    
+    public Stack(int size) {
+        this.size = size;
+        items = new Item[size];
     }
     
     public boolean push(Item item) {
-        if (count > DEFAULT_SIZE - 1) {
+        if (count > size - 1) {
             return false;
         }
         // set min value
