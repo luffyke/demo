@@ -1,7 +1,7 @@
 package god.damn.it;
 
 public class ColorBall {
-    
+
 	private static final int RED_BALL_LENGTH = 33;
 	private static final int BLUE_BALL_LENGTH = 16;
 	private static final int RESULT_LENGTH = 7;
@@ -10,14 +10,14 @@ public class ColorBall {
 		int reds[] = new int[RED_BALL_LENGTH];
 		int blues[] = new int[BLUE_BALL_LENGTH];
 		int result[] = new int[RESULT_LENGTH];
-		
+
 		for (int i = 0; i < RED_BALL_LENGTH; ++i) {
 			reds[i] = i + 1;
 		}
 		for (int i = 0; i < BLUE_BALL_LENGTH; ++i) {
 			blues[i] = i + 1;
 		}
-		
+
 		// red ball
 		int index = 0;
 		for (int i = 0; i < RESULT_LENGTH - 1; ++i) {
@@ -28,15 +28,26 @@ public class ColorBall {
 				i--;
 				continue;
 			} else {
-				result[i] = reds[index];
+				// set first value and the larger value
+				if (i == 0 || reds[index] > result[i - 1]) {
+					result[i] = reds[index];
+				} else {
+					// sort
+					for (int k = i - 1; k >= 0; --k) {
+						if (reds[index] < result[k]) {
+							result[k + 1] = result[k];
+							result[k] = reds[index];
+						}
+					}
+				}
 				// Mark 0 for selected number
 				reds[index] = 0;
 			}
 		}
-		
+
 		// blue ball
-		result[RESULT_LENGTH - 1] =  blues[(int) (Math.random() * BLUE_BALL_LENGTH)];
-		
+		result[RESULT_LENGTH - 1] = blues[(int) (Math.random() * BLUE_BALL_LENGTH)];
+
 		String split;
 		for (int i = 0; i < RESULT_LENGTH; ++i) {
 			split = i == RESULT_LENGTH - 2 ? " - " : " ";
