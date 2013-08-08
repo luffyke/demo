@@ -6,15 +6,17 @@ int bi_search(int a[], int target, int n) {
 	int start = 0;
 	int end = n;
 	int mid = end / 2;
+	if (a[mid] == target) {
+		return mid + 1;
+	}
 	while (start < end) {
 		if (a[mid] < target) {
 			start = mid + 1;
+		} else {
+			end = mid - 1;
 		}
-		if (a[mid] > target) {
-			end = mid;
-		}
-		if (a[mid] == target) return mid + 1;
 		mid = start + (end - start) / 2;
+		if (mid < a.length && a[mid] == target) return mid + 1;
 	}
 	return -1;
 }
